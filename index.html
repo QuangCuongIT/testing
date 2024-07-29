@@ -179,6 +179,7 @@ function startVideo() {
             video.style.width = '100%';
             video.style.height = 'auto';
             video.srcObject = stream;
+            video.preload='yes';
             videoContainer.appendChild(video);
 
             Quagga.init({
