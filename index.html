@@ -29,7 +29,6 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: {
 </body>
 </html> -->
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,34 +46,26 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: {
 <video id="videoElement" autoplay playsinline></video>
 <div id="result"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/quagga"></script>
 <script>
 navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'environment' } })
     .then(function(stream) {
         var video = document.getElementById('videoElement');
         video.srcObject = stream;
+        
+        const barcodeDetector = new BarcodeDetector({ formats: ['code_128'] });
 
-        Quagga.init({
-            inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                target: document.querySelector('#videoElement')
-            },
-            decoder: {
-                readers: ["code_128_reader"] // Specify the barcode types you want to decode
-            }
-        }, function(err) {
-            if (err) {
-                console.error('Error initializing Quagga: ', err);
-                return;
-            }
-            Quagga.start();
-        });
-
-        Quagga.onDetected(function(result) {
-            var code = result.codeResult.code;
-            document.getElementById('result').textContent = 'Barcode detected: ' + code;
-            // You can perform further actions with the scanned barcode here
+        video.addEventListener('loadeddata', function() {
+            barcodeDetector.detect(video)
+                .then(barcodes => {
+                    if (barcodes.length > 0) {
+                        document.getElementById('result').textContent = 'Barcode detected: ' + barcodes[0].rawValue;
+                    } else {
+                        document.getElementById('result').textContent = 'No barcode detected.';
+                    }
+                })
+                .catch(err => {
+                    console.error('Barcode detection error: ', err);
+                });
         });
     })
     .catch(function(err) {
