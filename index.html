@@ -1,20 +1,28 @@
-<html><head>
-</head><body>
-    <video src="" ></video>
-    <br />
-<button id='flipCamera'>Flip</button>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camera Access</title>
+<style>
+    video {
+        width: 100%;
+        height: auto;
+    }
+</style>
+</head>
+<body>
+<video id="videoElement" autoplay playsinline></video>
+
 <script>
-  var front = false;
-var video = document.querySelector('video');
-  document.getElementById('flipCamera').onclick = function() { front = !front; };
-  var constraints = { video: { facingMode: (front? "user" : "environment"), width: 640, height: 480  } };
-  navigator.mediaDevices.getUserMedia(constraints)
-  .then(function(mediaStream) {
-    video.srcObject = mediaStream;
-    video.onloadedmetadata = function(e) {
-    video.play();
-};
-})
-.catch(function(err) { console.log(err.name + ": " + err.message); })
-</script></html>
+navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function(stream) {
+        var video = document.getElementById('videoElement');
+        video.srcObject = stream;
+    })
+    .catch(function(err) {
+        console.error('Error accessing the camera: ', err);
+    });
+</script>
+</body>
+</html>
