@@ -15,7 +15,9 @@
 <video id="videoElement" autoplay playsinline></video>
 
 <script>
-navigator.mediaDevices.getUserMedia({ video: true })
+navigator.mediaDevices.getUserMedia({ audio: false, video: {
+    facingMode: 'environment'
+  } })
     .then(function(stream) {
         var video = document.getElementById('videoElement');
         video.srcObject = stream;
