@@ -193,7 +193,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
     let detectionHash = {};
     function onDetected(result) {
         detectionHash[result.codeResult.code]++;
-        if(detectionHash[result.codeResult.code] >= 3) {
+        if(detectionHash[result.codeResult.code] >= 8) {
             detectionHash = {};
             alert("Detected barcode: " + result.codeResult.code);
         }
