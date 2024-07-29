@@ -83,7 +83,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
 
 
 
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -135,80 +135,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
     });
 </script>
 </body>
-</html> -->
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Barcode Scanner</title>
-<style>
-    video {
-        width: 100%;
-        height: auto;
-    }
-    #videoPlaceholder {
-        cursor: pointer;
-    }
-</style>
-</head>
-<body>
-<div id="videoContainer">
-    <img src="placeholder.jpg" id="videoPlaceholder" onclick="startVideo()">
-</div>
-<div id="result"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/quagga"></script>
-<script>
-function startVideo() {
-    navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'environment' } })
-        .then(function(stream) {
-            var videoContainer = document.getElementById('videoContainer');
-            videoContainer.removeChild(document.getElementById('videoPlaceholder'));
-            
-            var video = document.createElement('video');
-            video.id = 'videoElement';
-            video.autoplay = true;
-            video.playsinline = true;
-            video.style.width = '100%';
-            video.style.height = 'auto';
-            video.srcObject = stream;
-            video.preload='yes';
-            videoContainer.appendChild(video);
-
-            Quagga.init({
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: document.querySelector('#videoElement')
-                },
-                decoder: {
-                    readers: ["code_128_reader"] // Specify the barcode types you want to decode
-                }
-            }, function(err) {
-                if (err) {
-                    console.error('Error initializing Quagga: ', err);
-                    return;
-                }
-                Quagga.start();
-            });
-
-            Quagga.onDetected(function(result) {
-                var code = result.codeResult.code;
-                document.getElementById('result').textContent = 'Barcode detected: ' + code;
-                // You can perform further actions with the scanned barcode here
-            });
-        })
-        .catch(function(err) {
-            console.error('Error accessing the camera: ', err);
-        });
-}
-</script>
-</body>
 </html>
+
+
+
