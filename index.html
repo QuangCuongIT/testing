@@ -160,7 +160,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
 <body>
 <div id="camera" style="width:100%"></div>
 <!-- <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script> -->
-    <script src="quagga.min.js"></script> -->
+<script src="quagga.min.js"></script> -->
 <script>
     const quaggaConf = {
         inputStream: {
@@ -184,6 +184,20 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
         }
         Quagga.start();
     });
+
+    // Quagga.onDetected(function (result) {
+    //     alert("Detected barcode: " + result.codeResult.code);
+    // });
+
+    // slowdown scanner
+    let detectionHash = {};
+    function onDetected(result) {
+        detectionHash[result.codeResult.code]++;
+        if(detectionHash[result.codeResult.code] >= 5) {
+            detectionHash = {};
+            alert("Detected barcode: " + result.codeResult.code);
+        }
+    }
 
     Quagga.onDetected(function (result) {
         alert("Detected barcode: " + result.codeResult.code);
