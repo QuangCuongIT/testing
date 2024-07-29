@@ -111,7 +111,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
             inputStream: {
                 name: "Live",
                 type: "LiveStream",
-                target: document.querySelector('#videoElement')
+                target: video
             },
             decoder: {
                 readers: ["code_128_reader"] // Specify the barcode types you want to decode
