@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -27,7 +27,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: {
     });
 </script>
 </body>
-</html> -->
+</html>
 
 <!-- <!DOCTYPE html>
 <html lang="en">
@@ -138,54 +138,3 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
 </html> -->
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Barcode Scanner</title>
-<style>
-    video {
-        width: 100%;
-        height: auto;
-    }
-</style>
-</head>
-<body>
-<video id="videoElement" autoplay playsinline></video>
-<div id="result"></div>
-
-<script>
-navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'environment' } })
-    .then(function(stream) {
-        var video = document.getElementById('videoElement');
-        video.srcObject = stream;
-        
-        if (window['BarcodeDetector']) {
-            const barcodeDetector = new window['BarcodeDetector']({ formats: ['code_128'] });
-
-            video.addEventListener('loadeddata', function() {
-                barcodeDetector.detect(video)
-                    .then(barcodes => {
-                        if (barcodes.length > 0) {
-                            document.getElementById('result').textContent = 'Barcode detected: ' + barcodes[0].rawValue;
-                            alert('Barcode detected: ' + barcodes[0].rawValue);
-                        } else {
-                            document.getElementById('result').textContent = 'No barcode detected.';
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Barcode detection error: ', err);
-                    });
-            });
-        } else {
-            console.error('BarcodeDetector is not supported by this browser.');
-            document.getElementById('result').textContent = 'Barcode detection not supported.';
-        }
-    })
-    .catch(function(err) {
-        console.error('Error accessing the camera: ', err);
-    });
-</script>
-</body>
-</html>
