@@ -59,6 +59,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
                 .then(barcodes => {
                     if (barcodes.length > 0) {
                         document.getElementById('result').textContent = 'Barcode detected: ' + barcodes[0].rawValue;
+                        alert('Barcode detected: ' + barcodes[0].rawValue);
                     } else {
                         document.getElementById('result').textContent = 'No barcode detected.';
                     }
