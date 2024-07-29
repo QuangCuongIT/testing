@@ -142,7 +142,6 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -154,20 +153,33 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'enviro
         width: 100%;
         height: auto;
     }
+    #videoPlaceholder {
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
-<video id="videoElement" playsinline></video>
-<button id="startButton">Start Video</button>
+<div id="videoContainer">
+    <img src="placeholder.jpg" id="videoPlaceholder" onclick="startVideo()">
+</div>
 <div id="result"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/quagga"></script>
 <script>
-document.getElementById('startButton').addEventListener('click', function() {
+function startVideo() {
     navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'environment' } })
         .then(function(stream) {
-            var video = document.getElementById('videoElement');
+            var videoContainer = document.getElementById('videoContainer');
+            videoContainer.removeChild(document.getElementById('videoPlaceholder'));
+            
+            var video = document.createElement('video');
+            video.id = 'videoElement';
+            video.autoplay = true;
+            video.playsinline = true;
+            video.style.width = '100%';
+            video.style.height = 'auto';
             video.srcObject = stream;
+            videoContainer.appendChild(video);
 
             Quagga.init({
                 inputStream: {
@@ -195,7 +207,7 @@ document.getElementById('startButton').addEventListener('click', function() {
         .catch(function(err) {
             console.error('Error accessing the camera: ', err);
         });
-});
+}
 </script>
 </body>
 </html>
